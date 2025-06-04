@@ -12,21 +12,22 @@ def convert():
         return jsonify({'success': False, 'error': 'Missing YouTube URL'}), 400
 
     try:
-        title = subprocess.check_output(['yt-dlp', '--no-playlist', '--no-check-certificate', '--get-title', youtube_url], text=True).strip()
-        audio_url = subprocess.check_output(
-            ['yt-dlp', '--no-playlist', '--no-check-certificate',
-    '--get-url', '-f', 'bestaudio[ext=m4a]/bestaudio', youtube_url],
-            text=True
+        title = subprocess.check_output(
+            ['yt-dlp', '--no-playlist', '--no-check-certificate',     '--user-agent', 'Mozilla/5.0','--get-title', youtube_url],
+            stderr=subprocess.STDOUT, text=True
         ).strip()
 
-        return jsonify({
-            'success': True,
-            'title': title,
-            'audioUrl': audio_url
-        })
+        audio_url = subprocess.check_output(
+            [    'yt-dlp','--no-playlist','--no-check-certificate', '--user-agent', 'Mozilla/5.0','--get-url', '-f', 'bestaudio[ext=m4a]/bestaudio', youtube_url],
+            stderr=subprocess.STDOUT, text=True
+        ).strip()
+
+        return jsonify({'success': True, 'title': title, 'audioUrl': audio_url})
 
     except subprocess.CalledProcessError as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
-
+        return jsonify({
+            'success': False,
+            'error': e.output.strip()
+        }), 500
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
