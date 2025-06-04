@@ -12,9 +12,10 @@ def convert():
         return jsonify({'success': False, 'error': 'Missing YouTube URL'}), 400
 
     try:
-        title = subprocess.check_output(['yt-dlp', '--get-title', youtube_url], text=True).strip()
+        title = subprocess.check_output(['yt-dlp', '--no-playlist', '--no-check-certificate', '--get-title', youtube_url], text=True).strip()
         audio_url = subprocess.check_output(
-            ['yt-dlp', '--get-url', '-f', 'bestaudio[ext=m4a]/bestaudio', youtube_url],
+            ['yt-dlp', '--no-playlist', '--no-check-certificate',
+    '--get-url', '-f', 'bestaudio[ext=m4a]/bestaudio', youtube_url],
             text=True
         ).strip()
 
