@@ -14,7 +14,7 @@ def convert():
     try:
         print("🚀 Running yt-dlp to get title...")
         result = subprocess.run(
-            ['yt-dlp', '--no-playlist', '--no-check-certificate', '--user-agent', 'Mozilla/5.0', '--get-title', youtube_url],
+            ['yt-dlp', '--no-playlist', '--user-agent', 'Mozilla/5.0', '--get-title', youtube_url],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
@@ -29,7 +29,7 @@ def convert():
 
         print("🎵 Getting audio URL...")
         audio_result = subprocess.run(
-            ['yt-dlp', '--no-playlist', '--no-check-certificate', '--user-agent', 'Mozilla/5.0', '--get-url', '-f', 'bestaudio[ext=m4a]/bestaudio', youtube_url],
+            ['yt-dlp', '--no-playlist', '--user-agent', 'Mozilla/5.0', '--get-url', '-f', 'bestaudio[ext=m4a]/bestaudio', youtube_url],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
